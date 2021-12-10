@@ -96,6 +96,8 @@ var lutador =  new function(){
     this.estados[1].tabelatrans[6]=new Object();
     this.estados[1].tabelatrans[6].x=0;
     this.estados[1].tabelatrans[6].y=0;
+
+    this.estados[2] = new Estado(1,4,0,0,100);
       
     this.desenha = function(){
         var sx = this.agente.width*this.estados[this.corrente].num+this.estados[this.corrente].sx;
@@ -118,12 +120,17 @@ var lutador =  new function(){
         if (n===1) {
             this.estados[lutador.corrente].num=lutador.estados[lutador.corrente].frameIni; 
             somMove.play();
+        } else if (n===2) {
+            this.estados[lutador.corrente].num=lutador.estados[lutador.corrente].frameIni; 
+            somPancada.play()
         }
+
     }
     
     this.calculaProxEstado = function() {
         switch(this.corrente) {
             case 1:
+            case 2:
                 if (this.estados[this.corrente].num === 
                     this.estados[this.corrente].frameFim) {
                     this.corrente =0;
@@ -145,9 +152,29 @@ var lutadora =  new function(){
     this.frames = 5;
     this.corrente=0;
     this.estados= new Array();
+    
     this.estados[0] = new Estado(0,1,0,0,1000);
     
-    this.estados[1] = new Estado(1,5,0,0,100); 
+    //this.estados[1] = new Estado(1,5,0,0,100); 
+
+    this.estados[1] = new Estado(1,5,0,0,300);
+    this.estados[1].tabelatrans = new Array();
+    this.estados[1].tabelatrans[1] = new Object();
+    this.estados[1].tabelatrans[1].x = 0;
+    this.estados[1].tabelatrans[1].y = 0;
+    this.estados[1].tabelatrans[2] = new Object();
+    this.estados[1].tabelatrans[2].x = 0;
+    this.estados[1].tabelatrans[2].y = 0;
+    this.estados[1].tabelatrans[3] = new Object();
+    this.estados[1].tabelatrans[3].x = 30;
+    this.estados[1].tabelatrans[3].y = -20;
+    this.estados[1].tabelatrans[4] = new Object();
+    this.estados[1].tabelatrans[4].x = 50;
+    this.estados[1].tabelatrans[4].y = 0;
+    this.estados[1].tabelatrans[5] = new Object();
+    this.estados[1].tabelatrans[5].x = 0;
+    this.estados[1].tabelatrans[5].y = 0;
+
       
     this.desenha = function(){
         var sx = this.agente.width*this.estados[this.corrente].num+this.estados[this.corrente].sx;
@@ -164,8 +191,12 @@ var lutadora =  new function(){
         this.calculaProxEstado();
     }
     
-     this.iniciaEstado = function(n) {
+    this.iniciaEstado = function(n) {
         this.corrente = n;
+        if (n===1) {
+            this.estados[lutadora.corrente].num=lutadora.estados[lutadora.corrente].frameIni;
+            somAh.play()
+        }
     }
     
     this.calculaProxEstado = function() {
@@ -203,7 +234,10 @@ document.onkeydown = function(e){
         lutador.iniciaEstado(0);
     } else if(keycode===38) {
         lutador.iniciaEstado(1);
-    } 
+    } else if(keycode===37) {
+        lutadora.iniciaEstado(1)
+        lutador.iniciaEstado(2)
+    }
 }
 
 GameLoop();
